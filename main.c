@@ -31,27 +31,37 @@ FILMS_LIST *new_film(FILM all_film) {
 void head(FILMS_LIST **head, FILM node) {
   FILMS_LIST *new_node = new_film(node);
   new_node->next = *head;
-  new_node->prev = *head;
   (*head)->prev = new_node;
   (*head)->next = new_node;
+  new_node->prev = *head;
   *head = new_node;
 } // элемент в хед
 
 void print_list(FILMS_LIST *head1) {
-  while (head1->next != NULL) {
+  char i;
+  while (head1 -> next != NULL) {
     printf("%s\n%d\n%s\n%s\n%.1f\n", head1-> all_film.film_name,
            head1 -> all_film.year, head1 -> all_film.country, head1 -> all_film.genre,
            head1 -> all_film.rating);
-    head1 = head1 -> next;
+    scanf("%s", &i);
+    if ('i' == 'd'){
+      head1 = head1 -> next;
+    }
+    else{
+      head1 = head1 -> prev;
+    }
+    system("clear");
   }
-  printf("\n");
-} // вывод всего
+} // вывод всего + перелистывание
 
 int main(void) {
-  FILMS_LIST *f = malloc(sizeof(FILMS_LIST));
+  FILM film1 = film_create("name", 3, "usa", "horr", 2.3);
+  FILMS_LIST *f = new_film(film1);
   f->next = f;
   f -> prev = f;
+  
   head(&f, film_create("df", 3, "fd", "gfd", 4.5));
+  
   print_list(f);
   
 
