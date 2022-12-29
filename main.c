@@ -55,14 +55,18 @@ void print_list(FILMS_LIST *head1) {
 } // вывод всего + перелистывание
 
 int main(void) {
-  FILM film1 = film_create("name", 3, "usa", "horr", 2.3);
-  FILMS_LIST *f = new_film(film1);
-  f->next = f;
-  f -> prev = f;
-  
-  head(&f, film_create("df", 3, "fd", "gfd", 4.5));
-  
-  print_list(f);
-  
-
+  printf(
+      "╔══════════════════════════════════╗\n║                                 "
+      " ║\n║                                  ║\n║                             "
+      "     ║\n║                                  ║\n║                         "
+      "         ║\n║                                  ║\n║                     "
+      "             ║\n║                                  ║\n║                 "
+      "                 ║\n║            проверка              ║\n║             "
+      "                     ║\n║                                  ║\n║         "
+      "                         ║\n║                                  ║\n║     "
+      "                             ║\n║                                  ║\n║ "
+      "                                 ║\n║                                  "
+      "║\n║                                  ║\n║                              "
+      "    ║\n╚══════════════════════════════════╝");
+  return 0;
 }
