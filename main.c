@@ -30,48 +30,63 @@ FILMS_LIST *new_film(FILM film) {
 
 void head(FILMS_LIST **head, FILM node) {
   FILMS_LIST *new_node = new_film(node);
+  if (new_node -> next != NULL){
+    new_node -> next = (*head);
+  }
+  if (new_node -> prev != NULL){
+    new_node -> prev = (*head);
+  }
   new_node->next = *head;
   (*head)->prev = new_node;
-  new_node->prev = *head;
-  (*head)->next = new_node;
-  *head = new_node;
+  (*head) = new_node;
 } // элемент в хед
 
-void print_list(FILMS_LIST *head1) {
-  char i;
-  while (head1 -> next != NULL) {
-    printf("%s\n%d\n%s\n%s\n%.1f\n", head1-> all_film.film_name,
-           head1 -> all_film.year, head1 -> all_film.country, head1 -> all_film.genre,
-           head1 -> all_film.rating);
-    scanf("%s", &i);
-    if (i == 'd'){
-      head1 = head1 -> next;
-    }
-    else if(i == 'a') {
-      head1 = head1 -> prev;
-    }
-    system("clear");
+void add(FILMS_LIST **head, FILMS_LIST **film1, FILM new_node){
+  FILMS_LIST *node1 = new_film(new_node);
+  node1 -> next = (*film1) -> next;
+  if (node1 -> next != NULL){
+    node1 -> next -> prev = (*film1);
   }
-} // вывод всего + перелистывание
+  node1 -> prev = (*film1);
+  (*film1) -> next = node1;
+  node1 -> next = (*film1);
+  (*film1) -> prev = node1;
+}
 
 int main(void) {
-  char ex;
+  char e, i;
   FILM film1;
   FILMS_LIST *f = new_film(film1);
   f->next = f;
   f -> prev = f;
   
   head(&f, film_create("df", 3, "fd", "gfd", 4.5));
-  head(&f, film_create("dff", 33, "fd", "gfd", 4.5));
-  head(&f, film_create("dssff", 323, "fd", "gfd", 4.5));
+  head(&f, film_create("aaaa", 3, "fdd", "gfd", 4.5));
+  head(&f, film_create("cccc", 3, "fd", "gfd", 4.5));
+  head(&f, film_create("bbbb", 3, "fdd", "gfd", 4.5));
+
+  printf("Это экран ввода логина и пороля, который пока не готов\nНажмите l чтобы перейти к списку фильмов\nНажмите е чтобы завершить программу\n");
+
+  scanf("%s", &e);
   
-  print_list(f);
-
-  scanf("%s", &ex);
-  if (ex == 'e'){
+  if (e == 'e'){
     exit(0);
-  }
-}
+  } // выхож из проги при любой непонятной ситуации
 
-// надо вынести перелистывание из функции вывода в меин иначе мы не сможем выйти никуда из списка фильмов
-// возможно функция вывода не нужна в принципе ибо выводиться список будет только 2 раза и далее через ифы к этим двум разам мы будем возвращаться
+  if (e == 'l'){
+  system("clear");
+    while (f -> next != NULL) {
+      printf("%s\n%d\n%s\n%s\n%.1f\n", f-> all_film.film_name,
+             f -> all_film.year, f -> all_film.country, f -> all_film.genre,
+             f -> all_film.rating);
+      scanf("%s", &i);
+      if (i == 'd'){
+        f = f -> next;
+      }
+      if(i == 'a') {
+        f = f -> prev;
+      }
+      system("clear");
+    }
+  } // пролистывание, надо убрать некоторые вещи из вывода и будет норм
+}
