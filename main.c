@@ -1,6 +1,7 @@
+#include "movie.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "movie.h"
+#include <string.h>
 
 typedef struct film {
   char *film_name;
@@ -8,7 +9,15 @@ typedef struct film {
   char *country;
   char *genre;
   char *rating;
- } FILM; // структура информации о фильме
+} FILM; // структура информации о фильме
+
+typedef struct user {
+  char *login;
+  char *pass;
+  int card;
+  int fav;
+  int admin;
+} USER; // структура пользователя
 
 typedef struct node {
   FILM all_film;
@@ -21,28 +30,44 @@ FILM film_create(char *n, char *y, char *c, char *g, char *r) {
   return smth;
 } // создание элемента для списка
 
+USER user_create(char *l, char *p, int c, int f, int a) {
+  USER smn = {l, p, c, f, a};
+  return smn;
+} // создание пользователя
 
 int main(void) {
+  int t = 0;
   char e, i, s;
   char *n = (char *)malloc(sizeof(100));
   char *g = (char *)malloc(sizeof(100));
   char *y = (char *)malloc(sizeof(100));
   char *c = (char *)malloc(sizeof(100));
   char *r = (char *)malloc(sizeof(100));
+  char ls[27] = {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o',
+                 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k',
+                 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm'};
+  char lb[27] = {'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O',
+                 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K',
+                 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M'};
+  char num[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+  char *l[100];
+  char *p[100];
+
   FILE *films = fopen("films.txt", "r");
-  
+  FILE *users = fopen("users.txt", "w+");
+
   fgets(n, 100, films);
   fgets(y, 100, films);
   fgets(c, 100, films);
   fgets(g, 100, films);
   fgets(r, 100, films);
-  
+
   FILM first = film_create(n, y, c, g, r);
   FILMS_LIST *f = new_film(first);
   f->next = f;
-  f -> prev = f;
+  f->prev = f;
 
-  for (int i = 1; i < 30; i++){
+  for (int i = 1; i < 30; i++) {
     fgets(n, 100, films);
     fgets(y, 100, films);
     fgets(c, 100, films);
@@ -51,49 +76,82 @@ int main(void) {
     head(&f, film_create(n, y, c, g, r));
   } // создание списка которое не работает
 
-  printf("Это экран ввода логина и пороля, который пока не готов\nНажмите l чтобы перейти к списку фильмов\nНажмите x чтобы выйти\n");
+  system("clear");
+  printf("\%24s\n\n", "Вход");
+  printf("\%50s\n", "Зарегестрироваться --> r");
   scanf("%s", &e);
-  
-  if (e == 'x'){
+
+  if (e == 'r') {
+    system("clear");
+    printf("\%35s\n\n", "Регистрация");
+    printf("Логин: ");
+    scanf("%s", &l);
+    if ((strlen(l) >= 3 && strlen(l) <= 20)) {
+      for (int i = 0; i < strlen(l); i++)
+        if (l[i] == *ls) {
+          t = 1;
+        } 
+          else {
+          continue;
+        }
+      if (t == 1) {
+        printf("Пароль: ");
+        scanf("%s", &p);
+      }
+    } 
+      else {
+      printf("Логин должен содержать от 3 до 20 символов латинского алфавита и "
+             "цифры\n");
+      printf("\n\%29s\n", "Выйти --> x");
+      scanf("%s", &s);
+      if (s == 'x') {
+        system("clear");
+        printf("\%30s\n", "Вы вышли");
+        exit(0);
+      }
+    }
+  }
+
+  if (e == 'x') {
     system("clear");
     printf("\%30s\n", "Вы вышли");
     exit(0);
   } // выход из проги при любой непонятной ситуации
 
-  if (e == 'l'){
+  if (e == 'l') {
     system("clear");
-    while (f -> next != NULL || f -> prev != NULL) {
+    while (f->next != NULL || f->prev != NULL) {
       printf("\%40s\n\n", "Каталог фильмов");
-      printf("\%28s\%20s\n\n", f -> all_film.film_name, f -> all_film.rating);
+      printf("\%28s\%20s\n\n", f->all_film.film_name, f->all_film.rating);
       printf("\%26s\n\n", "e <--     --> d");
       printf("\%34s\n", "s - подробнее");
       printf("\%28s\n", "x - выйти");
       scanf("%s", &i);
-      if (i == 'd'){
+      if (i == 'd') {
         system("clear");
-        f = f -> next;
+        f = f->next;
       }
-      if(i == 'a') {
+      if (i == 'a') {
         system("clear");
-        f = f -> prev;
+        f = f->prev;
       }
-      if (i == 's'){
+      if (i == 's') {
         system("clear");
         printf("\%59s\n\n", "Подробная информация о фильме");
-        printf("\%28s\%20s\n\n", f -> all_film.film_name, f -> all_film.rating);
-        printf("\n\n<<-- x\n");
+        printf("\%28s\%20s\n\n", f->all_film.film_name, f->all_film.rating);
+        printf("\n\n<-- x\n");
         scanf("%s", &s);
-        if (s == 'x'){
+        if (s == 'x') {
           system("clear");
           continue;
         }
       }
-      if (i == 'x'){
+      if (i == 'x') {
         system("clear");
         printf("\%30s\n", "Вы вышли");
         break;
       }
       system("clear");
     }
-  }// пролистывание + просмотр доп инфы
+  } // пролистывание + просмотр доп инфы
 }
