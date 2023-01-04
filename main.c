@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "movie.h"
 
 typedef struct film {
   char *film_name;
-  int year;
+  char *year;
   char *country;
   char *genre;
-  float rating;
-} FILM; // структура информации о фильме
+  char *rating;
+ } FILM; // структура информации о фильме
 
 typedef struct node {
   FILM all_film;
@@ -15,63 +16,84 @@ typedef struct node {
   struct node *prev;
 } FILMS_LIST; // структура списка фильмов (пойдет для общего и избранного)
 
-FILM film_create(char *n, int y, char *c, char *g, float r) {
+FILM film_create(char *n, char *y, char *c, char *g, char *r) {
   FILM smth = {n, y, c, g, r};
   return smth;
-} // создание элемента для списка, значения брать из файла
+} // создание элемента для списка
 
-FILMS_LIST *new_film(FILM film) {
-  FILMS_LIST *film_in = (FILMS_LIST*)malloc(sizeof(FILMS_LIST));
-  film_in->all_film = film;
-  film_in->next = NULL;
-  film_in->prev = NULL;
-  return film_in;
-}
-
-void head(FILMS_LIST **head, FILM node) {
-  FILMS_LIST *new_node = new_film(node);
-  new_node->next = *head;
-  (*head)->prev = new_node;
-  new_node->prev = *head;
-  (*head)->next = new_node;
-  *head = new_node;
-} // элемент в хед
-
-void print_list(FILMS_LIST *head1) {
-  char i;
-  while (head1 -> next != NULL) {
-    printf("%s\n%d\n%s\n%s\n%.1f\n", head1-> all_film.film_name,
-           head1 -> all_film.year, head1 -> all_film.country, head1 -> all_film.genre,
-           head1 -> all_film.rating);
-    scanf("%s", &i);
-    if (i == 'd'){
-      head1 = head1 -> next;
-    }
-    else if(i == 'a') {
-      head1 = head1 -> prev;
-    }
-    system("clear");
-  }
-} // вывод всего + перелистывание
 
 int main(void) {
-  char ex;
-  FILM film1;
-  FILMS_LIST *f = new_film(film1);
+  char e, i, s;
+  char *n = (char *)malloc(sizeof(100));
+  char *g = (char *)malloc(sizeof(100));
+  char *y = (char *)malloc(sizeof(100));
+  char *c = (char *)malloc(sizeof(100));
+  char *r = (char *)malloc(sizeof(100));
+  FILE *films = fopen("films.txt", "r");
+  
+  fgets(n, 100, films);
+  fgets(y, 100, films);
+  fgets(c, 100, films);
+  fgets(g, 100, films);
+  fgets(r, 100, films);
+  
+  FILM first = film_create(n, y, c, g, r);
+  FILMS_LIST *f = new_film(first);
   f->next = f;
   f -> prev = f;
-  
-  head(&f, film_create("df", 3, "fd", "gfd", 4.5));
-  head(&f, film_create("dff", 33, "fd", "gfd", 4.5));
-  head(&f, film_create("dssff", 323, "fd", "gfd", 4.5));
-  
-  print_list(f);
 
-  scanf("%s", &ex);
-  if (ex == 'e'){
+  for (int i = 1; i < 30; i++){
+    fgets(n, 100, films);
+    fgets(y, 100, films);
+    fgets(c, 100, films);
+    fgets(g, 100, films);
+    fgets(r, 100, films);
+    head(&f, film_create(n, y, c, g, r));
+  } // создание списка которое не работает
+
+  printf("Это экран ввода логина и пороля, который пока не готов\nНажмите l чтобы перейти к списку фильмов\nНажмите x чтобы выйти\n");
+  scanf("%s", &e);
+  
+  if (e == 'x'){
+    system("clear");
+    printf("\%30s\n", "Вы вышли");
     exit(0);
-  }
-}
+  } // выход из проги при любой непонятной ситуации
 
-// надо вынести перелистывание из функции вывода в меин иначе мы не сможем выйти никуда из списка фильмов
-// возможно функция вывода не нужна в принципе ибо выводиться список будет только 2 раза и далее через ифы к этим двум разам мы будем возвращаться
+  if (e == 'l'){
+    system("clear");
+    while (f -> next != NULL || f -> prev != NULL) {
+      printf("\%40s\n\n", "Каталог фильмов");
+      printf("\%28s\%20s\n\n", f -> all_film.film_name, f -> all_film.rating);
+      printf("\%26s\n\n", "e <--     --> d");
+      printf("\%34s\n", "s - подробнее");
+      printf("\%28s\n", "x - выйти");
+      scanf("%s", &i);
+      if (i == 'd'){
+        system("clear");
+        f = f -> next;
+      }
+      if(i == 'a') {
+        system("clear");
+        f = f -> prev;
+      }
+      if (i == 's'){
+        system("clear");
+        printf("\%59s\n\n", "Подробная информация о фильме");
+        printf("\%28s\%20s\n\n", f -> all_film.film_name, f -> all_film.rating);
+        printf("\n\n<<-- x\n");
+        scanf("%s", &s);
+        if (s == 'x'){
+          system("clear");
+          continue;
+        }
+      }
+      if (i == 'x'){
+        system("clear");
+        printf("\%30s\n", "Вы вышли");
+        break;
+      }
+      system("clear");
+    }
+  }// пролистывание + просмотр доп инфы
+}
