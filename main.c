@@ -43,15 +43,14 @@ int main(void) {
   char *y = (char *)malloc(sizeof(100));
   char *c = (char *)malloc(sizeof(100));
   char *r = (char *)malloc(sizeof(100));
-  char ls[27] = {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o',
-                 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k',
-                 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm'};
-  char lb[27] = {'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O',
-                 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K',
-                 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M'};
+  char lp[62] = {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd',
+               'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm',
+               'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D',
+               'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M',
+               '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
   char num[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-  char *l[100];
-  char *p[100];
+  char l[100];
+  char p[100];
 
   FILE *films = fopen("films.txt", "r");
   FILE *users = fopen("users.txt", "w+");
@@ -88,20 +87,18 @@ int main(void) {
     scanf("%s", &l);
     if ((strlen(l) >= 3 && strlen(l) <= 20)) {
       for (int i = 0; i < strlen(l); i++)
-        if (l[i] == *ls) {
-          t = 1;
-        } 
-          else {
-          continue;
-        }
+        for (int j = 0; j < 52; j++)
+          if (l[i] == lp[j]) {
+            t = 1;
+          } else {
+            continue;
+          }
       if (t == 1) {
         printf("Пароль: ");
         scanf("%s", &p);
       }
-    } 
-      else {
-      printf("Логин должен содержать от 3 до 20 символов латинского алфавита и "
-             "цифры\n");
+    } else {
+      printf("Логин должен содержать от 3 до 20 символов латинского алфавита\n");
       printf("\n\%29s\n", "Выйти --> x");
       scanf("%s", &s);
       if (s == 'x') {
@@ -123,7 +120,7 @@ int main(void) {
     while (f->next != NULL || f->prev != NULL) {
       printf("\%40s\n\n", "Каталог фильмов");
       printf("\%28s\%20s\n\n", f->all_film.film_name, f->all_film.rating);
-      printf("\%26s\n\n", "e <--     --> d");
+      printf("\%26s\n\n", "a <--     --> d");
       printf("\%34s\n", "s - подробнее");
       printf("\%28s\n", "x - выйти");
       scanf("%s", &i);
