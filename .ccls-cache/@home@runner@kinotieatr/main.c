@@ -119,7 +119,7 @@ int main(void) {
         exit(0);
       }
     }
-  }
+  } // регистрация
 
   if (e == 'x') {
     system("clear");
