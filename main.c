@@ -101,12 +101,12 @@ int main(void) {
         printf("Пароль: ");
         scanf("%s", &p);
         if ((strlen(p) >= 6 && strlen(p) <= 20)) {
-          for (int l = 0; l < strlen(p); l++){
+          for (int l = 0; l < strlen(p); l++) {
             for (int g = 0; g < 62; g++)
               if (p[l] == lp[g]) {
                 t1++;
               }
-          for (int g = 0; g < 26; g++)
+            for (int g = 0; g < 26; g++)
               if (p[l] == lp[g]) {
                 t11++;
               }
@@ -114,7 +114,7 @@ int main(void) {
               if (p[l] == num[g]) {
                 t12++;
               }
-            }
+          }
           if (t1 == strlen(p) && t11 > 0 && t12 > 0) {
             printf("Номер карты: ");
             scanf("%s", &k);
