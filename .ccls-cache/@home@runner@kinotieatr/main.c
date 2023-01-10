@@ -89,15 +89,27 @@ int main(void) {
       for (int i = 0; i < strlen(l); i++)
         for (int j = 0; j < 52; j++)
           if (l[i] == lp[j]) {
-            t = 1;
-          } else {
-            continue;
+            t++;
+          // } else {
+          //    continue;
           }
-      if (t == 1) {
+      if (t == strlen(l)) {
+        //
         printf("Пароль: ");
         scanf("%s", &p);
       }
-    } else {
+      else{
+        printf("Логин должен содержать от 3 до 20 символов латинского алфавита\n");
+      printf("\n\%29s\n", "Выйти --> x");
+      scanf("%s", &s);
+      if (s == 'x') {
+        system("clear");
+        printf("\%30s\n", "Вы вышли");
+        exit(0);
+      }
+      }
+    }
+    else {
       printf("Логин должен содержать от 3 до 20 символов латинского алфавита\n");
       printf("\n\%29s\n", "Выйти --> x");
       scanf("%s", &s);
@@ -107,7 +119,7 @@ int main(void) {
         exit(0);
       }
     }
-  }
+  } // регистрация
 
   if (e == 'x') {
     system("clear");
