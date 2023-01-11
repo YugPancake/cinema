@@ -98,6 +98,7 @@ int main(void) {
             t++;
           }
       if (t == strlen(l)) {
+        fprintf(users, "%s\n", l);
         printf("Пароль: ");
         scanf("%s", &p);
         if ((strlen(p) >= 6 && strlen(p) <= 20)) {
@@ -116,6 +117,7 @@ int main(void) {
               }
           }
           if (t1 == strlen(p) && t11 > 0 && t12 > 0) {
+            fprintf(users, "%s\n", p);
             printf("Номер карты: ");
             scanf("%s", &k);
             if ((strlen(k) == 16)) {
@@ -125,10 +127,11 @@ int main(void) {
                     t2++;
                   }
               if (t2 == strlen(k)) {
+                fprintf(users, "%s\n", k);
                 printf("Вы зарегестрировались");
               } else {
                 printf("Номер карты должен содержать 16 цифр\n");
-                printf("\n\%29s\n", "Выйти --> x");
+                printf("\n\%29s\n", "Выйти —> x");
                 scanf("%s", &s);
                 if (s == 'x') {
                   system("clear");
@@ -138,7 +141,7 @@ int main(void) {
               }
             } else {
               printf("Номер карты должен 16 цифр\n");
-              printf("\n\%29s\n", "Выйти --> x");
+              printf("\n\%29s\n", "Выйти —> x");
               scanf("%s", &s);
               if (s == 'x') {
                 system("clear");
@@ -150,7 +153,7 @@ int main(void) {
             printf("Пароль должен содержать от 6 до 20 символов латинского "
                    "алфавита и цифр и содержать минимум по одной букве в "
                    "верхнем и нижнем регистре и одну цифру\n");
-            printf("\n\%29s\n", "Выйти --> x");
+            printf("\n\%29s\n", "Выйти —> x");
             scanf("%s", &s);
             if (s == 'x') {
               system("clear");
@@ -162,7 +165,7 @@ int main(void) {
           printf("Пароль должен содержать от 6 до 20 символов латинского "
                  "алфавита и цифр и содержать минимум по одной букве в "
                  "верхнем и нижнем регистре и одну цифру\n");
-          printf("\n\%29s\n", "Выйти --> x");
+          printf("\n\%29s\n", "Выйти —> x");
           scanf("%s", &s);
           if (s == 'x') {
             system("clear");
@@ -170,10 +173,11 @@ int main(void) {
             exit(0);
           }
         }
-      } else {
-        printf("Логин должен содержать от 3 до 20 символов латинского "
-               "алфавита\n");
-        printf("\n\%29s\n", "Выйти --> x");
+      }
+      else {
+        printf(
+            "Логин должен содержать от 3 до 20 символов латинского алфавита\n");
+        printf("\n\%29s\n", "Выйти —> x");
         scanf("%s", &s);
         if (s == 'x') {
           system("clear");
@@ -181,21 +185,10 @@ int main(void) {
           exit(0);
         }
       }
-
-      else{
-        printf("Логин должен содержать от 3 до 20 символов латинского алфавита\n");
-      printf("\n\%29s\n", "Выйти --> x");
-      scanf("%s", &s);
-      if (s == 'x') {
-        system("clear");
-        printf("\%30s\n", "Вы вышли");
-        exit(0);
-      }
-      }
-    }
-    else {
-      printf("Логин должен содержать от 3 до 20 символов латинского алфавита\n");
-      printf("\n\%29s\n", "Выйти --> x");
+    } else {
+      printf(
+          "Логин должен содержать от 3 до 20 символов латинского алфавита\n");
+      printf("\n\%29s\n", "Выйти —> x");
       scanf("%s", &s);
       if (s == 'x') {
         system("clear");
@@ -206,45 +199,45 @@ int main(void) {
   } // регистрация
 
   if (e == 'x') {
-    system("clear");
-    printf("\%30s\n", "Вы вышли");
-    exit(0);
-  } // выход из проги при любой непонятной ситуации
+  system("clear");
+  printf("\%30s\n", "Вы вышли");
+  exit(0);
+} // выход из проги при любой непонятной ситуации
 
   if (e == 'l') {
-    system("clear");
-    while (f->next != NULL || f->prev != NULL) {
-      printf("\%40s\n\n", "Каталог фильмов");
-      printf("\%28s\%20s\n\n", f->all_film.film_name, f->all_film.rating);
-      printf("\%26s\n\n", "a <--     --> d");
-      printf("\%34s\n", "s - подробнее");
-      printf("\%28s\n", "x - выйти");
-      scanf("%s", &i);
-      if (i == 'd') {
-        system("clear");
-        f = f->next;
-      }
-      if (i == 'a') {
-        system("clear");
-        f = f->prev;
-      }
-      if (i == 's') {
-        system("clear");
-        printf("\%59s\n\n", "Подробная информация о фильме");
-        printf("\%28s\%20s\n\n", f->all_film.film_name, f->all_film.rating);
-        printf("\n\n<-- x\n");
-        scanf("%s", &s);
-        if (s == 'x') {
-          system("clear");
-          continue;
-        }
-      }
-      if (i == 'x') {
-        system("clear");
-        printf("\%30s\n", "Вы вышли");
-        break;
-      }
+  system("clear");
+  while (f->next != NULL || f->prev != NULL) {
+    printf("\%40s\n\n", "Каталог фильмов");
+    printf("\%28s\%20s\n\n", f->all_film.film_name, f->all_film.rating);
+    printf("\%26s\n\n", "a <--     --> d");
+    printf("\%34s\n", "s - подробнее");
+    printf("\%28s\n", "x - выйти");
+    scanf("%s", &i);
+    if (i == 'd') {
       system("clear");
+      f = f->next;
     }
-  } // пролистывание + просмотр доп инфы
+    if (i == 'a') {
+      system("clear");
+      f = f->prev;
+    }
+    if (i == 's') {
+      system("clear");
+      printf("\%59s\n\n", "Подробная информация о фильме");
+      printf("\%28s\%20s\n\n", f->all_film.film_name, f->all_film.rating);
+      printf("\n\n<-- x\n");
+      scanf("%s", &s);
+      if (s == 'x') {
+        system("clear");
+        continue;
+      }
+    }
+    if (i == 'x') {
+      system("clear");
+      printf("\%30s\n", "Вы вышли");
+      break;
+    }
+    system("clear");
+  }
+} // пролистывание + просмотр доп инфы
 }
