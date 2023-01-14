@@ -42,11 +42,11 @@ int main(void) {
   int t12 = 0;
   int t2 = 0;
   char e, i, s;
-  char *n = (char *)malloc(sizeof(100));
-  char *g = (char *)malloc(sizeof(100));
-  char *y = (char *)malloc(sizeof(100));
-  char *c = (char *)malloc(sizeof(100));
-  char *r = (char *)malloc(sizeof(100));
+  char n[100];
+  char g[100];
+  char y[100];
+  char c[100];
+  char r[100];
   char lp[62] = {'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A',
                  'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C',
                  'V', 'B', 'N', 'M', 'q', 'w', 'e', 'r', 't', 'y', 'u',
@@ -59,7 +59,7 @@ int main(void) {
   char k[100];
 
   FILE *films = fopen("films.txt", "r");
-  FILE *users = fopen("users.txt", "w+");
+  FILE *users = fopen("users.txt", "r+");
 
   fgets(n, 100, films);
   fgets(y, 100, films);
@@ -72,6 +72,22 @@ int main(void) {
   f->next = f;
   f->prev = f;
 
+  size_t lines_count = 0;
+  while (!feof(users)) {
+    if (fgetc(users) == '\n')
+      lines_count++;
+  }
+  lines_count++; // подсчитывание строк
+
+  char **str = (char **)malloc(sizeof(char *));
+  int tmp = 0;
+  while (!feof(users)) {
+    str[tmp] = (char *)malloc(sizeof(char) * 256);
+    fgets(str[tmp], 256, users);
+    tmp++;
+    str = (char**)realloc(str, sizeof(char*)*(tmp + 1));
+  }
+
   for (int i = 1; i < 30; i++) {
     fgets(n, 100, films);
     fgets(y, 100, films);
@@ -82,9 +98,20 @@ int main(void) {
   } // создание списка которое не работает
 
   system("clear");
-  printf("\%24s\n\n", "Вход");
-  printf("\%50s\n", "Зарегестрироваться --> r");
+  printf("\%50s\n\n", "Зарегестрироваться --> r");
+  printf("\%53s\n\%48s\n", "Уже зарегестрировались?", "Нажмите v, чтобы войти");
   scanf("%s", &e);
+
+  if (e == 'v') {
+    system("clear");
+    printf("\%50s\n\n", "Введите логин и пароль");
+    printf("Логин: \n");
+    scanf("%s", &l);
+    printf("Пароль: \n");
+    scanf("%s", &p);
+    for (int i = 0; i < lines_count; i++)
+      ;
+  } // вход
 
   if (e == 'r') {
     system("clear");
@@ -98,7 +125,6 @@ int main(void) {
             t++;
           }
       if (t == strlen(l)) {
-        fprintf(users, "%s\n", l);
         printf("Пароль: ");
         scanf("%s", &p);
         if ((strlen(p) >= 6 && strlen(p) <= 20)) {
@@ -117,7 +143,6 @@ int main(void) {
               }
           }
           if (t1 == strlen(p) && t11 > 0 && t12 > 0) {
-            fprintf(users, "%s\n", p);
             printf("Номер карты: ");
             scanf("%s", &k);
             if ((strlen(k) == 16)) {
@@ -127,8 +152,11 @@ int main(void) {
                     t2++;
                   }
               if (t2 == strlen(k)) {
+                printf("\nВы зарегестрировались");
+                fprintf(users, "%s\n", l);
+                fprintf(users, "%s\n", p);
                 fprintf(users, "%s\n", k);
-                printf("Вы зарегестрировались");
+                fprintf(users, "%s\n", "0");
               } else {
                 printf("Номер карты должен содержать 16 цифр\n");
                 printf("\n\%29s\n", "Выйти —> x");
@@ -173,8 +201,7 @@ int main(void) {
             exit(0);
           }
         }
-      }
-      else {
+      } else {
         printf(
             "Логин должен содержать от 3 до 20 символов латинского алфавита\n");
         printf("\n\%29s\n", "Выйти —> x");
@@ -199,45 +226,48 @@ int main(void) {
   } // регистрация
 
   if (e == 'x') {
-  system("clear");
-  printf("\%30s\n", "Вы вышли");
-  exit(0);
-} // выход из проги при любой непонятной ситуации
+    system("clear");
+    printf("\%30s\n", "Вы вышли");
+    exit(0);
+  } // выход из проги при любой непонятной ситуации
 
   if (e == 'l') {
-  system("clear");
-  while (f->next != NULL || f->prev != NULL) {
-    printf("\%40s\n\n", "Каталог фильмов");
-    printf("\%28s\%20s\n\n", f->all_film.film_name, f->all_film.rating);
-    printf("\%26s\n\n", "a <--     --> d");
-    printf("\%34s\n", "s - подробнее");
-    printf("\%28s\n", "x - выйти");
-    scanf("%s", &i);
-    if (i == 'd') {
-      system("clear");
-      f = f->next;
-    }
-    if (i == 'a') {
-      system("clear");
-      f = f->prev;
-    }
-    if (i == 's') {
-      system("clear");
-      printf("\%59s\n\n", "Подробная информация о фильме");
-      printf("\%28s\%20s\n\n", f->all_film.film_name, f->all_film.rating);
-      printf("\n\n<-- x\n");
-      scanf("%s", &s);
-      if (s == 'x') {
-        system("clear");
-        continue;
-      }
-    }
-    if (i == 'x') {
-      system("clear");
-      printf("\%30s\n", "Вы вышли");
-      break;
-    }
     system("clear");
-  }
-} // пролистывание + просмотр доп инфы
+    while (f->next != NULL || f->prev != NULL) {
+      printf("\%40s\n\n", "Каталог фильмов");
+      printf("\%28s\%20s\n\n", f->all_film.film_name, f->all_film.rating);
+      printf("\%26s\n\n", "a <--     --> d");
+      printf("\%34s\n", "s - подробнее");
+      printf("\%28s\n", "x - выйти");
+      scanf("%s", &i);
+      if (i == 'd') {
+        system("clear");
+        f = f->next;
+      }
+      if (i == 'a') {
+        system("clear");
+        f = f->prev;
+      }
+      if (i == 's') {
+        system("clear");
+        printf("\%59s\n\n", "Подробная информация о фильме");
+        printf("\%28s\%20s\n\n", f->all_film.film_name, f->all_film.rating);
+        printf("\n\n<-- x\n");
+        scanf("%s", &s);
+        if (s == 'x') {
+          system("clear");
+          continue;
+        }
+      }
+      if (i == 'x') {
+        system("clear");
+        printf("\%30s\n", "Вы вышли");
+        break;
+      }
+      system("clear");
+    }
+  } // пролистывание + просмотр доп инфы
+
+  fclose(films);
+  fclose(users);
 }
